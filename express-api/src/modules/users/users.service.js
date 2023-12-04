@@ -1,4 +1,4 @@
-import User from './users.model.js';
+import User from './users.model';
 
 class UsersService {
   findAll = async () => {
@@ -11,40 +11,32 @@ class UsersService {
 
   findById = async (id) => {
     try {
-      const user = await User.findByPk(id);
-      if (!user) throw new Error('User not found');
-      return res.json(user);
+      return await User.findByPk(id);
     } catch (error) {
       throw new Error(error);
     }
   };
 
-  create = async (name) => {
+  create = async (payload) => {
     try {
-      return await User.create({ name });
+      return await User.create(payload);
     } catch (error) {
       throw new Error(error);
     }
   };
 
-  update = async (id, name) => {
+  update = async (user, name) => {
     try {
-      const user = await User.findByPk(id);
-      if (!user) throw new Error('User not found');
       user.name = name;
-      await user.save();
-      return user;
+      return await user.save();
     } catch (error) {
       throw new Error(error);
     }
   };
 
-  delete = async (id) => {
+  delete = async (user) => {
     try {
-      const user = await User.findByPk(id);
-      if (!user) throw new Error('User not found');
-      await user.destroy();
-      return { message: 'User deleted' };
+      return await user.destroy();
     } catch (error) {
       throw new Error(error);
     }

@@ -2,7 +2,7 @@ import compression from 'compression';
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import sequelize from './configs/db.config.js';
+import sequelize from './configs/db.config';
 import modules from './modules';
 
 const app = express();
@@ -49,7 +49,6 @@ app.use((error, req, res, next) => {
       message: error.message || 'Internal Server Error',
     },
   });
-  next();
 });
 
 export default app;

@@ -1,8 +1,0 @@
-{% extends "layouts.html" %} {% block content %}
-<h1>Confirm Delete Product</h1>
-<p>Are you sure you want to delete {{ product.name }}?</p>
-<form method="post">
-  {% csrf_token %}
-  <button type="submit">Confirm</button>
-</form>
-{% endblock %}

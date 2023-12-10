@@ -137,5 +137,5 @@ cd python-script-prox
 Run the Python Proxy Script (`localhost:5000/proxy`)
 
 ```bash
-cd python3 api_proxy.py
+python3 api_proxy.py
 ```

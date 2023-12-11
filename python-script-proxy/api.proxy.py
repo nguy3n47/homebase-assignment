@@ -11,20 +11,30 @@ def proxy(path):
     req_headers = dict(request.headers)
     req_body = request.get_data()
 
-    if request.method == "GET":
-        response = requests.get(url, headers=req_headers)
-    elif request.method == "POST":
-        response = requests.post(url, headers=req_headers, data=req_body)
-    elif request.method == "PUT":
-        response = requests.put(url, headers=req_headers, data=req_body)
-    elif request.method == "DELETE":
-        response = requests.delete(url, headers=req_headers)
-    else:
-        return jsonify({"error": "Invalid request method"})
+    # Use a dictionary to map methods to corresponding functions
+    method_functions = {
+        "GET": requests.get,
+        "POST": requests.post,
+        "PUT": requests.put,
+        "DELETE": requests.delete
+    }
 
-    if response.ok:
+    # Check if the request method is valid
+    if request.method not in method_functions:
+        return jsonify({"error": "Invalid request method"}), 400
+
+    # Get the appropriate function based on the request method
+    request_function = method_functions[request.method]
+
+    try:
+        # Make the request to the Express API
+        response = request_function(url, headers=req_headers, data=req_body)
+        response.raise_for_status()  # Raise an error for non-OK responses
         return jsonify(response.json()), response.status_code
-    return jsonify({"error": "Failed to process request"}), response.status_code
+    except requests.RequestException as e:
+        error_message = f"Request failed: {str(e)}"
+        app.logger.error(error_message)  # Log the error
+        return jsonify({"error": error_message}), 500  # Return a 500 status for internal errors
 
 
 if __name__ == "__main__":

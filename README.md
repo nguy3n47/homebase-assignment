@@ -2,6 +2,10 @@
 
 HOMEBASE: Backend Engineer - Assignment
 
+# Prerequisites
+- Node.js >= v18.16.1
+- Python >= 3.11.6
+
 # Structure
 
 ## 1. Express and Node.js API
